@@ -37,4 +37,29 @@
   "id": 1
 }⏎
 ```
+
+### モデルのバリデーション
+
+空の投稿は禁止
+
+api/models/Message.js
+```
+  attributes: {
+    body: {
+      type: 'string', 
+      required: true  // 必須
+    }
+  },
+```
+
+以下のようにメッセージがnullの場合はエラーで帰ってくる
+
+```
+~/g/sails-chat> curl -F 'body=' localhost:1337/message
+{
+  "code": "E_INVALID_NEW_RECORD",
+  "details": "Could not use specified `body`.  Cannot set \"\" (empty string) for a required attribute.",
+  "message": "The server could not fulfill this request (`POST /message`) due to a problem with the parameters that were sent.  See the `details` for more info.  **The following additional tip will not be shown in production**:  Tip: Check your client-side code to make sure that the request data it sends matches the expectations of the corresponding attribues in your model.  Also check that your client-side code sends data for every required attribute."
+}⏎
+```
 ---
